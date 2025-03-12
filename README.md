@@ -4,6 +4,7 @@
 
 ## English
 
+### [🔗 LIVE DEMO](https://bowvee-resume.netlify.app/)
 A modern AI-powered resume builder that helps you create professional resumes in minutes, built with Next.js, TypeScript, and Tailwind CSS.
 
 ### Features
@@ -79,6 +80,7 @@ Please read our contributing guidelines before making a pull request.
 
 ## Chinese | 中文
 
+### [🔗 LIVE DEMO](https://bowvee-resume.netlify.app/)
 一个现代化的 AI 简历生成器，使用 Next.js、TypeScript 和 Tailwind CSS 构建，帮助您在几分钟内创建专业的简历。
 
 ### 功能特点
