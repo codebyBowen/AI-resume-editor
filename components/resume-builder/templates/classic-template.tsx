@@ -1,12 +1,14 @@
-import type { ResumeData } from "@/lib/resume-data"
-import { Phone, Mail, MapPin, Linkedin } from "lucide-react"
+import type { ResumeData } from "@/lib/resume-data";
+import { Phone, Mail, MapPin, Linkedin } from "lucide-react";
 
 interface ModernResumeTemplateProps {
-  resumeData: ResumeData
+  resumeData: ResumeData;
 }
 
-export default function ModernResumeTemplate({ resumeData }: ModernResumeTemplateProps) {
-  const { personalInfo, workExperience, education, skills} = resumeData
+export default function ModernResumeTemplate({
+  resumeData,
+}: ModernResumeTemplateProps) {
+  const { personalInfo, workExperience, education, skills } = resumeData;
 
   return (
     <div className="w-full h-full min-h-[1000px] max-w-[800px] mx-auto font-sans">
@@ -16,7 +18,9 @@ export default function ModernResumeTemplate({ resumeData }: ModernResumeTemplat
           <h1 className="text-3xl font-bold uppercase tracking-wider">
             {personalInfo.firstName} {personalInfo.lastName}
           </h1>
-          {personalInfo.jobTitle && <h2 className="text-xl mt-1">{personalInfo.jobTitle}</h2>}
+          {personalInfo.jobTitle && (
+            <h2 className="text-xl mt-1">{personalInfo.jobTitle}</h2>
+          )}
         </div>
         <div className="text-right">
           {personalInfo.email && (
@@ -59,7 +63,9 @@ export default function ModernResumeTemplate({ resumeData }: ModernResumeTemplat
               <div className="space-y-2">
                 {skills.map((skill) => (
                   <div key={skill.id} className="flex flex-col">
-                    <span className="text-slate-800 font-semibold">{skill.name}</span>
+                    <span className="text-slate-800 font-semibold">
+                      {skill.name}
+                    </span>
                     {skill.level > 0 && (
                       <div className="mt-1 flex w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                         <div
@@ -149,25 +155,25 @@ export default function ModernResumeTemplate({ resumeData }: ModernResumeTemplat
               <div className="space-y-6">
                 {workExperience.map((job) => (
                   <div key={job.id}>
-                    <div className="font-bold text-slate-800">{job.position}</div>
+                    <div className="font-bold text-slate-800">
+                      {job.position}
+                    </div>
                     <div className="flex justify-between items-center mt-1">
-                      <p className="font-semibold text-slate-700">{job.company}</p>
+                      <p className="font-semibold text-slate-700">
+                        {job.company}
+                      </p>
                       <p className="text-sm text-slate-600 italic">
                         {job.startDate} - {job.endDate}
                       </p>
                     </div>
                     {job.location && (
-                      <p className="text-sm text-slate-600 mt-1">{job.location}</p>
+                      <p className="text-sm text-slate-600 mt-1">
+                        {job.location}
+                      </p>
                     )}
-                    {job.description ? (
+                    {job.description && (
                       <p className="mt-2 text-slate-700">{job.description}</p>
-                    ) : job.achievements && job.achievements.length > 0 ? (
-                      <ul className="list-disc ml-5 mt-2 text-slate-700">
-                        {job.achievements.map((achievement, idx) => (
-                          <li key={idx}>{achievement}</li>
-                        ))}
-                      </ul>
-                    ) : null}
+                    )}
                   </div>
                 ))}
               </div>
@@ -187,16 +193,26 @@ export default function ModernResumeTemplate({ resumeData }: ModernResumeTemplat
                       {edu.degree} {edu.field && `in ${edu.field}`}
                     </div>
                     <div className="flex justify-between items-center mt-1">
-                      <p className="font-semibold text-slate-700">{edu.institution}</p>
+                      <p className="font-semibold text-slate-700">
+                        {edu.institution}
+                      </p>
                       <p className="text-sm text-slate-600 italic">
                         {edu.startDate} - {edu.endDate}
                       </p>
                     </div>
                     {edu.location && (
-                      <p className="text-sm text-slate-600 mt-1">{edu.location}</p>
+                      <p className="text-sm text-slate-600 mt-1">
+                        {edu.location}
+                      </p>
                     )}
-                    {edu.description && <p className="mt-2 text-slate-700">{edu.description}</p>}
-                    {edu.gpa && <p className="mt-1 text-sm text-slate-600">GPA: {edu.gpa}</p>}
+                    {edu.description && (
+                      <p className="mt-2 text-slate-700">{edu.description}</p>
+                    )}
+                    {/* {edu.gpa && (
+                      <p className="mt-1 text-sm text-slate-600">
+                        GPA: {edu.gpa}
+                      </p>
+                    )} */}
                   </div>
                 ))}
               </div>
@@ -205,5 +221,5 @@ export default function ModernResumeTemplate({ resumeData }: ModernResumeTemplat
         </div>
       </div>
     </div>
-  )
+  );
 }
