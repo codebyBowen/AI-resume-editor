@@ -16,7 +16,7 @@ export default function ResumeBuilder() {
   const [selectedTemplate, setSelectedTemplate] = useState<"modern" | "classic">("modern")
   const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData)
   const [activeSection, setActiveSection] = useState<string>("personal")
-  const [isEditing, setIsEditing] = useState(false)
+  // const [isEditing, setIsEditing] = useState(false)
 
   // Update resume data
   const updateResumeData = (newData: Partial<ResumeData>) => {

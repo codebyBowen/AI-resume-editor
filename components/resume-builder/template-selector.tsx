@@ -24,7 +24,7 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate }:
           <CardContent className="p-2">
             <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm">
               <Image
-                src="/placeholder.svg?height=300&width=225"
+                src="/template/modern-template.png?height=350&width=275"
                 alt="Modern Template"
                 width={225}
                 height={300}
@@ -40,7 +40,7 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate }:
           Modern
         </Label>
       </div>
-
+{/* 
       <div className="space-y-2">
         <Card
           className={`cursor-pointer transition-all ${selectedTemplate === "classic" ? "ring-2 ring-indigo-600" : "hover:border-indigo-300"}`}
@@ -63,7 +63,7 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate }:
         <Label htmlFor="classic" className="text-center block font-medium">
           Classic
         </Label>
-      </div>
+      </div> */}
     </RadioGroup>
   )
 }
