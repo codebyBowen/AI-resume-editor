@@ -70,7 +70,7 @@ function EducationItem({ education, index, updateEducation, deleteEducation }: E
   }
 
   return (
-    <AccordionItem value={education.id} className="border rounded-md px-2 py-1 mb-2">
+    <AccordionItem key={index} value={education.id} className="border rounded-md px-2 py-1 mb-2">
       <AccordionTrigger className="hover:no-underline">
         <div className="flex justify-between w-full pr-4">
           <span className="font-medium">

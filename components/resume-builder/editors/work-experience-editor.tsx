@@ -63,7 +63,7 @@ interface WorkExperienceItemProps {
   deleteWorkExperience: (id: string) => void
 }
 
-function WorkExperienceItem({ job, index, updateWorkExperience, deleteWorkExperience }: WorkExperienceItemProps) {
+function WorkExperienceItem({ job, updateWorkExperience, deleteWorkExperience }: WorkExperienceItemProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     updateWorkExperience(job.id, { [name]: value })

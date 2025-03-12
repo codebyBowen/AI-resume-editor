@@ -28,7 +28,7 @@ export default function TestimonialCard({ name, position, image, rating, testimo
             <Star key={i} className={`h-4 w-4 ${i < rating ? "text-yellow-400 fill-yellow-400" : "text-slate-300"}`} />
           ))}
         </div>
-        <p className="text-slate-600 italic">"{testimonial}"</p>
+        <p className="text-slate-600 italic">&ldquo;{testimonial}&rdquo;</p>
       </CardContent>
     </Card>
   )

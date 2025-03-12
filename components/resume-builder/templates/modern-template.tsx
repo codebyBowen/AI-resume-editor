@@ -1,5 +1,5 @@
 import type { ResumeData } from "@/lib/resume-data"
-import { Phone, Mail, MapPin, Globe, Calendar } from "lucide-react"
+// import { Phone, Mail, MapPin, Globe, Calendar } from "lucide-react"
 import { 
   DndContext, 
   closestCenter,
@@ -59,8 +59,8 @@ function SortableSection({
     // height: '100%',
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 1 : undefined,
-    position: 'relative',
-    touchAction: 'none'
+    position: 'relative' as const,
+    touchAction: 'none' as const,
   };
 
   return (
@@ -82,7 +82,7 @@ function SortableSection({
 }
 
 export default function ModernTemplate({ resumeData }: ModernTemplateProps) {
-  const { personalInfo, workExperience, education, skills, accentColor = "indigo" } = resumeData
+  const { personalInfo, workExperience, education, skills, accentColor = "black" } = resumeData
 
   // Define initial sections order
   const defaultSections: Section[] = [
@@ -150,7 +150,7 @@ export default function ModernTemplate({ resumeData }: ModernTemplateProps) {
                   <div className="flex flex-col md:flex-row md:justify-between md:items-center">
                     <h4 className="font-semibold text-slate-800">{job.position}</h4>
                     <div className="flex items-center text-sm text-slate-500">
-                      <Calendar className="h-3 w-3 mr-1" />
+                      {/* <Calendar className="h-3 w-3 mr-1" /> */}
                       <span>
                         {job.startDate} - {job.endDate}
                       </span>
@@ -181,7 +181,7 @@ export default function ModernTemplate({ resumeData }: ModernTemplateProps) {
                       {edu.degree} in {edu.field}
                     </h4>
                     <div className="flex items-center text-sm text-slate-500">
-                      <Calendar className="h-3 w-3 mr-1" />
+                      {/* <Calendar className="h-3 w-3 mr-1" /> */}
                       <span>
                         {edu.startDate} - {edu.endDate}
                       </span>
@@ -259,28 +259,28 @@ export default function ModernTemplate({ resumeData }: ModernTemplateProps) {
         <div className="mt-4 flex flex-wrap gap-4">
           {personalInfo.email && (
             <div className="flex items-center text-sm text-slate-600">
-              <Mail className={`h-4 w-4 mr-2 text-${accentColor}-600`} />
+              {/* <Mail className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
               <span>{personalInfo.email}</span>
             </div>
           )}
 
           {personalInfo.phone && (
             <div className="flex items-center text-sm text-slate-600">
-              <Phone className={`h-4 w-4 mr-2 text-${accentColor}-600`} />
+              {/* <Phone className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
               <span>{personalInfo.phone}</span>
             </div>
           )}
 
           {personalInfo.location && (
             <div className="flex items-center text-sm text-slate-600">
-              <MapPin className={`h-4 w-4 mr-2 text-${accentColor}-600`} />
+              {/* <MapPin className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
               <span>{personalInfo.location}</span>
             </div>
           )}
 
           {personalInfo.website && (
             <div className="flex items-center text-sm text-slate-600">
-              <Globe className={`h-4 w-4 mr-2 text-${accentColor}-600`} />
+              {/* <Globe className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
               <span>{personalInfo.website}</span>
             </div>
           )}

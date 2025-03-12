@@ -81,14 +81,16 @@ export default function Home() {
               </div>
             </div>
             <div className="flex-1 relative">
-              <div className="relative rounded-lg overflow-hidden shadow-2xl border border-slate-700">
-                <Image
-                  src="/template/modern-template.png?height=600&width=800"
-                  alt="AI Resume Builder Demo"
-                  width={800}
-                  height={600}
-                  className="w-full h-auto"
-                />
+              <div className="relative rounded-lg overflow-hidden shadow-2xl border-slate-700">
+                <AnimatedSection>
+                  <Image
+                    src="/template/modern-template-2.png?height=600&width=800"
+                    alt="AI Resume Builder Demo"
+                    width={800}
+                    height={600}
+                    className="w-full h-auto"
+                  />
+                </AnimatedSection>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-30"></div>
               </div>
               <div className="absolute -bottom-6 -left-6 bg-indigo-600 text-white p-4 rounded-lg shadow-lg">
@@ -173,13 +175,15 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="flex-1">
-              <Image
-                src="/placeholder.svg?height=600&width=600"
-                alt="Why choose our platform"
-                width={600}
-                height={600}
-                className="rounded-lg shadow-xl"
-              />
+              <AnimatedSection>
+                <Image
+                  src="/template/modern-template.png?height=600&width=600"
+                  alt="Why choose our platform"
+                  width={600}
+                  height={600}
+                  className="rounded-lg shadow-xl"
+                />
+              </AnimatedSection>
             </div>
             <div className="flex-1 space-y-8">
               <AnimatedSection>

@@ -11,6 +11,7 @@ import WorkExperienceEditor from "@/components/resume-builder/editors/work-exper
 import EducationEditor from "@/components/resume-builder/editors/education-editor"
 import SkillsEditor from "@/components/resume-builder/editors/skills-editor"
 import { type ResumeData, initialResumeData } from "@/lib/resume-data"
+import { type WorkExperience, type Education, type Skill } from "@/lib/resume-data"
 
 export default function ResumeBuilder() {
   const [selectedTemplate, setSelectedTemplate] = useState<"modern" | "classic">("modern")
@@ -47,7 +48,7 @@ export default function ResumeBuilder() {
   }
 
   // Update a work experience entry
-  const updateWorkExperience = (id: string, data: any) => {
+  const updateWorkExperience = (id: string, data: Partial<WorkExperience>) => {
     setResumeData((prev) => ({
       ...prev,
       workExperience: prev.workExperience.map((exp) => (exp.id === id ? { ...exp, ...data } : exp)),
@@ -83,7 +84,7 @@ export default function ResumeBuilder() {
   }
 
   // Update an education entry
-  const updateEducation = (id: string, data: any) => {
+  const updateEducation = (id: string, data: Partial<Education>) => {
     setResumeData((prev) => ({
       ...prev,
       education: prev.education.map((edu) => (edu.id === id ? { ...edu, ...data } : edu)),
@@ -114,7 +115,7 @@ export default function ResumeBuilder() {
   }
 
   // Update a skill
-  const updateSkill = (id: string, data: any) => {
+  const updateSkill = (id: string, data: Partial<Skill>) => {
     setResumeData((prev) => ({
       ...prev,
       skills: prev.skills.map((skill) => (skill.id === id ? { ...skill, ...data } : skill)),
@@ -131,7 +132,7 @@ export default function ResumeBuilder() {
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
-      <HeaderToolbar selectedTemplate={selectedTemplate} resumeData={resumeData} />
+      <HeaderToolbar />
 
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -192,7 +193,7 @@ export default function ResumeBuilder() {
           <div className="lg:col-span-8">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-bold mb-4">Resume Preview</h2>
-              <div className="border border-slate-200 rounded-lg overflow-hidden">
+              <div className="border border-slate-200 rounded-lg overflow-hidden"  id="resume-preview">
                 {selectedTemplate === "modern" ? (
                   <ModernTemplate resumeData={resumeData} />
                 ) : (
