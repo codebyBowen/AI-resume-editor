@@ -93,10 +93,10 @@ export default function Home() {
                 </AnimatedSection>
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-30"></div>
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-indigo-600 text-white p-4 rounded-lg shadow-lg">
+              {/* <div className="absolute -bottom-6 -left-6 bg-indigo-600 text-white p-4 rounded-lg shadow-lg">
                 <p className="font-bold">93% Success Rate</p>
                 <p className="text-sm">Interview callbacks</p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
