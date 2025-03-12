@@ -1,16 +1,20 @@
-"use client"
+"use client";
 
-import { Card, CardContent } from "@/components/ui/card"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import Image from "next/image"
+import { Card, CardContent } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import Image from "next/image";
 
 interface TemplateSelectorProps {
-  selectedTemplate: string
-  onSelectTemplate: (template: "modern" | "classic") => void
+  selectedTemplate: string;
+  onSelectTemplate: (template: "modern" | "classic") => void;
 }
 
-export default function TemplateSelector({ selectedTemplate, onSelectTemplate }: TemplateSelectorProps) {
+export default function TemplateSelector({
+  selectedTemplate,
+  onSelectTemplate,
+}: TemplateSelectorProps) {
+  console.log('selectedTemplate', selectedTemplate)
   return (
     <RadioGroup
       value={selectedTemplate}
@@ -19,7 +23,12 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate }:
     >
       <div className="space-y-2">
         <Card
-          className={`cursor-pointer transition-all ${selectedTemplate === "modern" ? "ring-2 ring-indigo-600" : "hover:border-indigo-300"}`}
+          className={`cursor-pointer transition-all ${
+            selectedTemplate === "modern"
+              ? "ring-2 ring-indigo-600"
+              : "hover:border-indigo-300"
+          }`}
+          onClick={() => onSelectTemplate("modern")}
         >
           <CardContent className="p-2">
             <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm">
@@ -31,7 +40,11 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate }:
                 className="object-cover"
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <RadioGroupItem value="modern" id="modern" className="sr-only" />
+                <RadioGroupItem
+                  value="modern"
+                  id="modern"
+                  className="sr-only"
+                />
               </div>
             </div>
           </CardContent>
@@ -40,22 +53,31 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate }:
           Modern
         </Label>
       </div>
-{/* 
+
       <div className="space-y-2">
         <Card
-          className={`cursor-pointer transition-all ${selectedTemplate === "classic" ? "ring-2 ring-indigo-600" : "hover:border-indigo-300"}`}
+          className={`cursor-pointer transition-all ${
+            selectedTemplate === "classic"
+              ? "ring-2 ring-indigo-600"
+              : "hover:border-indigo-300"
+          }`}
+          onClick={() => onSelectTemplate("classic")}
         >
           <CardContent className="p-2">
             <div className="relative aspect-[3/4] w-full overflow-hidden rounded-sm">
               <Image
-                src="/placeholder.svg?height=300&width=225"
+                src="/template/modern-template-2.png?height=300&width=225"
                 alt="Classic Template"
                 width={225}
                 height={300}
                 className="object-cover"
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <RadioGroupItem value="classic" id="classic" className="sr-only" />
+                <RadioGroupItem
+                  value="classic"
+                  id="classic"
+                  className="sr-only"
+                />
               </div>
             </div>
           </CardContent>
@@ -63,8 +85,7 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate }:
         <Label htmlFor="classic" className="text-center block font-medium">
           Classic
         </Label>
-      </div> */}
+      </div>
     </RadioGroup>
-  )
+  );
 }
-
