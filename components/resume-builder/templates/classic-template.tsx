@@ -18,7 +18,7 @@ import {
   verticalListSortingStrategy,
   useSortable,
 } from "@dnd-kit/sortable";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CSS } from "@dnd-kit/utilities";
 
 interface ModernResumeTemplateProps {
@@ -74,7 +74,6 @@ export default function ClassicTemplate({
   resumeData,
 }: ModernResumeTemplateProps) {
   const { personalInfo, workExperience, education, skills } = resumeData;
-
   // Define initial sections order
   const defaultSections: Section[] = [
     { id: "summary", type: "summary", title: "Professional Summary" },
@@ -215,148 +214,200 @@ export default function ClassicTemplate({
     }
   };
 
+  const [scale, setScale] = useState(1);
+  const [containerHeight, setContainerHeight] = useState(0);
+  const container2Ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const targetWidth = 1000;
+      setScale(Math.min(1, window.innerWidth / targetWidth));
+      
+      // 更新高度
+      if (container2Ref.current) {
+        setContainerHeight(container2Ref.current.offsetHeight);
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    
+    // 创建 ResizeObserver 来监听内容高度变化
+    const resizeObserver = new ResizeObserver(() => {
+      if (container2Ref.current) {
+        setContainerHeight(container2Ref.current.offsetHeight);
+      }
+    });
+
+    if (container2Ref.current) {
+      resizeObserver.observe(container2Ref.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   return (
-    <div className="w-full h-full min-h-[1000px] max-w-[800px] mx-auto font-sans">
-      {/* Header */}
-      <header className="flex justify-between items-start bg-slate-800 text-white p-6">
-        <div>
-          <h1 className="text-3xl font-bold uppercase tracking-wider">
-            {personalInfo.firstName} {personalInfo.lastName}
-          </h1>
-          {personalInfo.jobTitle && (
-            <h2 className="text-xl mt-1">{personalInfo.jobTitle}</h2>
-          )}
-        </div>
-        <div className="text-right">
-          {personalInfo.email && (
-            <div className="flex items-center justify-end mb-1">
-              <span className="mr-1">{personalInfo.email}</span>
-              <Mail className="h-4 w-4" />
+    <div className="w-full">
+      <div 
+        id="resume-container-1"
+        className="w-full transform-gpu" 
+        style={{ 
+          transformOrigin: 'top left',
+          transform: `scale(${scale})`,
+          width: `${100/scale}%`,
+          height: containerHeight * scale  // 应用缩放后的高度
+        }}
+      >
+        <div 
+          id="resume-container-2"
+          ref={container2Ref}
+          className="w-[800px] mx-auto font-sans"
+        >
+          {/* Header */}
+          <header className="flex justify-between items-start bg-slate-800 text-white p-6">
+            <div>
+              <h1 className="text-3xl font-bold uppercase tracking-wider">
+                {personalInfo.firstName} {personalInfo.lastName}
+              </h1>
+              {personalInfo.jobTitle && (
+                <h2 className="text-xl mt-1">{personalInfo.jobTitle}</h2>
+              )}
             </div>
-          )}
-          {personalInfo.phone && (
-            <div className="flex items-center justify-end mb-1">
-              <span className="mr-1">{personalInfo.phone}</span>
-              <Phone className="h-4 w-4" />
+            <div className="text-right">
+              {personalInfo.email && (
+                <div className="flex items-center justify-end mb-1">
+                  <span className="mr-1">{personalInfo.email}</span>
+                  <Mail className="h-4 w-4" />
+                </div>
+              )}
+              {personalInfo.phone && (
+                <div className="flex items-center justify-end mb-1">
+                  <span className="mr-1">{personalInfo.phone}</span>
+                  <Phone className="h-4 w-4" />
+                </div>
+              )}
+              {personalInfo.location && (
+                <div className="flex items-center justify-end mb-1">
+                  <span className="mr-1">{personalInfo.location}</span>
+                  <MapPin className="h-4 w-4" />
+                </div>
+              )}
+              {personalInfo.website && (
+                <div className="flex items-center justify-end">
+                  <span className="mr-1">{personalInfo.website}</span>
+                  <Linkedin className="h-4 w-4" />
+                </div>
+              )}
             </div>
-          )}
-          {personalInfo.location && (
-            <div className="flex items-center justify-end mb-1">
-              <span className="mr-1">{personalInfo.location}</span>
-              <MapPin className="h-4 w-4" />
-            </div>
-          )}
-          {personalInfo.website && (
-            <div className="flex items-center justify-end">
-              <span className="mr-1">{personalInfo.website}</span>
-              <Linkedin className="h-4 w-4" />
-            </div>
-          )}
-        </div>
-      </header>
+          </header>
 
-      {/* Main Content */}
-      <div className="flex flex-row">
-        {/* Left Sidebar */}
-        <div className="w-1/3 bg-gray-100 p-4">
-          {/* Skills */}
-          {skills && skills.length > 0 && (
-            <section className="mb-6">
-              <h3 className="text-lg font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-300 pb-1">
-                Skills
-              </h3>
-              <div className="space-y-2">
-                {skills.map((skill) => (
-                  <div key={skill.id} className="flex flex-col">
-                    <span className="text-slate-800 font-semibold">
-                      {skill.name}
-                    </span>
-                    {skill.level > 0 && (
-                      <div className="mt-1 flex w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                        <div
-                          className="bg-slate-700 h-full rounded-full"
-                          style={{ width: `${(skill.level / 5) * 100}%` }}
-                        />
+          {/* Main Content */}
+          <div className="flex flex-row">
+            {/* Left Sidebar */}
+            <div className="w-1/3 bg-gray-100 p-4">
+              {/* Skills */}
+              {skills && skills.length > 0 && (
+                <section className="mb-6">
+                  <h3 className="text-lg font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-300 pb-1">
+                    Skills
+                  </h3>
+                  <div className="space-y-2">
+                    {skills.map((skill) => (
+                      <div key={skill.id} className="flex flex-col">
+                        <span className="text-slate-800 font-semibold">
+                          {skill.name}
+                        </span>
+                        {skill.level > 0 && (
+                          <div className="mt-1 flex w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                            <div
+                              className="bg-slate-700 h-full rounded-full"
+                              style={{ width: `${(skill.level / 5) * 100}%` }}
+                            />
+                          </div>
+                        )}
                       </div>
-                    )}
+                    ))}
                   </div>
-                ))}
-              </div>
-            </section>
-          )}
+                </section>
+              )}
 
-          {/* Languages */}
-          {/* {languages && languages.length > 0 && (
-            <section className="mb-6">
-              <h3 className="text-lg font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-300 pb-1">
-                Languages
-              </h3>
-              <div className="space-y-2">
-                {languages.map((language) => (
-                  <div key={language.id} className="flex justify-between">
-                    <span className="text-slate-800">{language.name}</span>
-                    <span className="text-slate-600">{language.level}</span>
+              {/* Languages */}
+              {/* {languages && languages.length > 0 && (
+                <section className="mb-6">
+                  <h3 className="text-lg font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-300 pb-1">
+                    Languages
+                  </h3>
+                  <div className="space-y-2">
+                    {languages.map((language) => (
+                      <div key={language.id} className="flex justify-between">
+                        <span className="text-slate-800">{language.name}</span>
+                        <span className="text-slate-600">{language.level}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </section>
-          )} */}
+                </section>
+              )} */}
 
-          {/* Certifications */}
-          {/* {certifications && certifications.length > 0 && (
-            <section className="mb-6">
-              <h3 className="text-lg font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-300 pb-1">
-                Certifications
-              </h3>
-              <div className="space-y-2">
-                {certifications.map((cert) => (
-                  <div key={cert.id} className="mb-2">
-                    <div className="font-semibold text-slate-800">{cert.name}</div>
-                    <div className="text-sm text-slate-600">{cert.issuer}, {cert.year}</div>
+              {/* Certifications */}
+              {/* {certifications && certifications.length > 0 && (
+                <section className="mb-6">
+                  <h3 className="text-lg font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-300 pb-1">
+                    Certifications
+                  </h3>
+                  <div className="space-y-2">
+                    {certifications.map((cert) => (
+                      <div key={cert.id} className="mb-2">
+                        <div className="font-semibold text-slate-800">{cert.name}</div>
+                        <div className="text-sm text-slate-600">{cert.issuer}, {cert.year}</div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </section>
-          )} */}
+                </section>
+              )} */}
 
-          {/* Interests */}
-          {/* {interests && interests.length > 0 && (
-            <section>
-              <h3 className="text-lg font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-300 pb-1">
-                Interests
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {interests.map((interest) => (
-                  <span 
-                    key={interest.id}
-                    className="bg-slate-200 text-slate-800 px-3 py-1 rounded-full text-sm"
-                  >
-                    {interest.name}
-                  </span>
-                ))}
-              </div>
-            </section>
-          )} */}
-        </div>
+              {/* Interests */}
+              {/* {interests && interests.length > 0 && (
+                <section>
+                  <h3 className="text-lg font-bold uppercase tracking-wider text-slate-800 mb-3 border-b border-slate-300 pb-1">
+                    Interests
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {interests.map((interest) => (
+                      <span 
+                        key={interest.id}
+                        className="bg-slate-200 text-slate-800 px-3 py-1 rounded-full text-sm"
+                      >
+                        {interest.name}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              )} */}
+            </div>
 
-        {/* Right Content */}
-        <div className="w-2/3 p-6">
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={sections.map((s) => s.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              {sections.map((section) => (
-                <SortableSection key={section.id} id={section.id}>
-                  {renderSectionContent(section)}
-                </SortableSection>
-              ))}
-            </SortableContext>
-          </DndContext>
+            {/* Right Content */}
+            <div className="w-2/3 p-6">
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={sections.map((s) => s.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {sections.map((section) => (
+                    <SortableSection key={section.id} id={section.id}>
+                      {renderSectionContent(section)}
+                    </SortableSection>
+                  ))}
+                </SortableContext>
+              </DndContext>
+            </div>
+          </div>
         </div>
       </div>
     </div>

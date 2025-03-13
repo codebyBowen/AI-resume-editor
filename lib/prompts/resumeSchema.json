@@ -1,0 +1,43 @@
+{
+    "personalInfo": {
+        "firstName": "String",
+        "lastName": "String",
+        "jobTitle": "String",
+        "email": "String",
+        "phone": "String",
+        "location": "String",
+        "website": "String",
+        "summary": "String"
+    },
+    "workExperience": [
+        {
+            "id": "String",
+            "company": "String",
+            "position": "String",
+            "location": "String",
+            "startDate": "String (MM/YYYY)",
+            "endDate": "String (MM/YYYY or 'Present')",
+            "description": "String",
+            "isCurrentJob": "Boolean"
+        }
+    ],
+    "education": [
+        {
+            "id": "String",
+            "institution": "String",
+            "degree": "String",
+            "field": "String",
+            "location": "String",
+            "startDate": "String (MM/YYYY)",
+            "endDate": "String (MM/YYYY)",
+            "description": "String"
+        }
+    ],
+    "skills": [
+        {
+            "id": "String",
+            "name": "String",
+            "level": "Number (1-5)"
+        }
+    ]
+}

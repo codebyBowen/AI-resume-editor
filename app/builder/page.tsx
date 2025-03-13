@@ -1,22 +1,29 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import HeaderToolbar from "@/components/resume-builder/header-toolbar"
-import TemplateSelector from "@/components/resume-builder/template-selector"
-import ModernTemplate from "@/components/resume-builder/templates/modern-template"
-import ClassicTemplate from "@/components/resume-builder/templates/classic-template"
-import PersonalInfoEditor from "@/components/resume-builder/editors/personal-info-editor"
-import WorkExperienceEditor from "@/components/resume-builder/editors/work-experience-editor"
-import EducationEditor from "@/components/resume-builder/editors/education-editor"
-import SkillsEditor from "@/components/resume-builder/editors/skills-editor"
-import { type ResumeData, initialResumeData } from "@/lib/resume-data"
-import { type WorkExperience, type Education, type Skill } from "@/lib/resume-data"
+import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import HeaderToolbar from "@/components/resume-builder/header-toolbar";
+import TemplateSelector from "@/components/resume-builder/template-selector";
+import ModernTemplate from "@/components/resume-builder/templates/modern-template";
+import ClassicTemplate from "@/components/resume-builder/templates/classic-template";
+import PersonalInfoEditor from "@/components/resume-builder/editors/personal-info-editor";
+import WorkExperienceEditor from "@/components/resume-builder/editors/work-experience-editor";
+import EducationEditor from "@/components/resume-builder/editors/education-editor";
+import SkillsEditor from "@/components/resume-builder/editors/skills-editor";
+import { type ResumeData, initialResumeData } from "@/lib/resume-data";
+import {
+  type WorkExperience,
+  type Education,
+  type Skill,
+} from "@/lib/resume-data";
+import DialogDemo from "@/components/aiModal/AiPopup";
 
 export default function ResumeBuilder() {
-  const [selectedTemplate, setSelectedTemplate] = useState<"modern" | "classic">("modern")
-  const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData)
-  const [activeSection, setActiveSection] = useState<string>("personal")
+  const [selectedTemplate, setSelectedTemplate] = useState<
+    "modern" | "classic"
+  >("modern");
+  const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData);
+  const [activeSection, setActiveSection] = useState<string>("personal");
   // const [isEditing, setIsEditing] = useState(false)
 
   // Update resume data
@@ -24,8 +31,8 @@ export default function ResumeBuilder() {
     setResumeData((prev) => ({
       ...prev,
       ...newData,
-    }))
-  }
+    }));
+  };
 
   // Add a new work experience entry
   const addWorkExperience = () => {
@@ -44,24 +51,26 @@ export default function ResumeBuilder() {
           isCurrentJob: true,
         },
       ],
-    }))
-  }
+    }));
+  };
 
   // Update a work experience entry
   const updateWorkExperience = (id: string, data: Partial<WorkExperience>) => {
     setResumeData((prev) => ({
       ...prev,
-      workExperience: prev.workExperience.map((exp) => (exp.id === id ? { ...exp, ...data } : exp)),
-    }))
-  }
+      workExperience: prev.workExperience.map((exp) =>
+        exp.id === id ? { ...exp, ...data } : exp
+      ),
+    }));
+  };
 
   // Delete a work experience entry
   const deleteWorkExperience = (id: string) => {
     setResumeData((prev) => ({
       ...prev,
       workExperience: prev.workExperience.filter((exp) => exp.id !== id),
-    }))
-  }
+    }));
+  };
 
   // Add a new education entry
   const addEducation = () => {
@@ -80,24 +89,26 @@ export default function ResumeBuilder() {
           description: "Describe your studies and achievements",
         },
       ],
-    }))
-  }
+    }));
+  };
 
   // Update an education entry
   const updateEducation = (id: string, data: Partial<Education>) => {
     setResumeData((prev) => ({
       ...prev,
-      education: prev.education.map((edu) => (edu.id === id ? { ...edu, ...data } : edu)),
-    }))
-  }
+      education: prev.education.map((edu) =>
+        edu.id === id ? { ...edu, ...data } : edu
+      ),
+    }));
+  };
 
   // Delete an education entry
   const deleteEducation = (id: string) => {
     setResumeData((prev) => ({
       ...prev,
       education: prev.education.filter((edu) => edu.id !== id),
-    }))
-  }
+    }));
+  };
 
   // Add a new skill
   const addSkill = () => {
@@ -111,24 +122,26 @@ export default function ResumeBuilder() {
           level: 3,
         },
       ],
-    }))
-  }
+    }));
+  };
 
   // Update a skill
   const updateSkill = (id: string, data: Partial<Skill>) => {
     setResumeData((prev) => ({
       ...prev,
-      skills: prev.skills.map((skill) => (skill.id === id ? { ...skill, ...data } : skill)),
-    }))
-  }
+      skills: prev.skills.map((skill) =>
+        skill.id === id ? { ...skill, ...data } : skill
+      ),
+    }));
+  };
 
   // Delete a skill
   const deleteSkill = (id: string) => {
     setResumeData((prev) => ({
       ...prev,
       skills: prev.skills.filter((skill) => skill.id !== id),
-    }))
-  }
+    }));
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
@@ -140,7 +153,10 @@ export default function ResumeBuilder() {
           <div className="lg:col-span-4 space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-bold mb-4">Choose a Template</h2>
-              <TemplateSelector selectedTemplate={selectedTemplate} onSelectTemplate={setSelectedTemplate} />
+              <TemplateSelector
+                selectedTemplate={selectedTemplate}
+                onSelectTemplate={setSelectedTemplate}
+              />
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md">
@@ -155,7 +171,9 @@ export default function ResumeBuilder() {
                 <TabsContent value="personal">
                   <PersonalInfoEditor
                     data={resumeData.personalInfo}
-                    updateData={(data) => updateResumeData({ personalInfo: data })}
+                    updateData={(data) =>
+                      updateResumeData({ personalInfo: data })
+                    }
                   />
                 </TabsContent>
 
@@ -192,8 +210,14 @@ export default function ResumeBuilder() {
           {/* Right side - Resume preview */}
           <div className="lg:col-span-8">
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4">Resume Preview</h2>
-              <div className="border border-slate-200 rounded-lg overflow-hidden"  id="resume-preview">
+              <div className="flex flex-row justify-between">
+                <h2 className="text-xl font-bold mb-4">Resume Preview</h2>
+                <DialogDemo resumeData={resumeData} />
+              </div>
+              <div
+                className="border border-slate-200 rounded-lg overflow-hidden"
+                id="resume-preview"
+              >
                 {selectedTemplate === "modern" ? (
                   <ModernTemplate resumeData={resumeData} />
                 ) : (
@@ -205,6 +229,5 @@ export default function ResumeBuilder() {
         </div>
       </main>
     </div>
-  )
+  );
 }
-

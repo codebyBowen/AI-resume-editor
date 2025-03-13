@@ -112,7 +112,7 @@ export default function PersonalInfoEditor({ data, updateData }: PersonalInfoEdi
         />
       </div>
 
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-[calc(100%-2rem)]">
         Update Personal Information
       </Button>
     </form>

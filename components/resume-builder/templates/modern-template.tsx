@@ -17,7 +17,7 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { GripVertical } from 'lucide-react';
 
 interface ModernTemplateProps {
@@ -83,6 +83,38 @@ function SortableSection({
 
 export default function ModernTemplate({ resumeData }: ModernTemplateProps) {
   const { personalInfo, workExperience, education, skills, accentColor = "black" } = resumeData
+  const [scale, setScale] = useState(1);
+  const [containerHeight, setContainerHeight] = useState(0);
+  const container2Ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const targetWidth = 1000;
+      setScale(Math.min(1, window.innerWidth / targetWidth));
+      
+      if (container2Ref.current) {
+        setContainerHeight(container2Ref.current.offsetHeight);
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    
+    const resizeObserver = new ResizeObserver(() => {
+      if (container2Ref.current) {
+        setContainerHeight(container2Ref.current.offsetHeight);
+      }
+    });
+
+    if (container2Ref.current) {
+      resizeObserver.observe(container2Ref.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   // Define initial sections order
   const defaultSections: Section[] = [
@@ -232,82 +264,99 @@ export default function ModernTemplate({ resumeData }: ModernTemplateProps) {
   };
 
   return (
-    <div className="bg-white p-8 shadow-sm w-full h-full min-h-[1000px] max-w-[800px] mx-auto font-sans">
-      {/* Header */}
-      <header className={`border-b-2 border-${accentColor}-600 pb-6 mb-6`}>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-800">
-              {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
-            <h2 className={`text-xl text-${accentColor}-600 mt-1`}>{personalInfo.jobTitle}</h2>
-          </div>
-
-          {/* {personalInfo.photo && (
-            <div className="mt-4 md:mt-0">
-              <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-indigo-600">
-                <img
-                  src={personalInfo.photo || "/placeholder.svg"}
-                  alt={`${personalInfo.firstName} ${personalInfo.lastName}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          )} */}
-        </div>
-
-        <div className="mt-4 flex flex-wrap gap-4">
-          {personalInfo.email && (
-            <div className="flex items-center text-sm text-slate-600">
-              {/* <Mail className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
-              <span>{personalInfo.email}</span>
-            </div>
-          )}
-
-          {personalInfo.phone && (
-            <div className="flex items-center text-sm text-slate-600">
-              {/* <Phone className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
-              <span>{personalInfo.phone}</span>
-            </div>
-          )}
-
-          {personalInfo.location && (
-            <div className="flex items-center text-sm text-slate-600">
-              {/* <MapPin className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
-              <span>{personalInfo.location}</span>
-            </div>
-          )}
-
-          {personalInfo.website && (
-            <div className="flex items-center text-sm text-slate-600">
-              {/* <Globe className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
-              <span>{personalInfo.website}</span>
-            </div>
-          )}
-        </div>
-      </header>
-
-      {/* Draggable Sections */}
-      <DndContext 
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
+    <div className="w-full">
+      <div 
+        id="resume-container-1"
+        className="w-full transform-gpu" 
+        style={{ 
+          transformOrigin: 'top left',
+          transform: `scale(${scale})`,
+          width: `${100/scale}%`,
+          height: containerHeight * scale
+        }}
       >
-        <SortableContext 
-          items={sections.map(s => s.id)}
-          strategy={verticalListSortingStrategy}
+        <div 
+          id="resume-container-2"
+          ref={container2Ref}
+          className="bg-white p-8 shadow-sm w-full h-full min-h-[1000px] max-w-[800px] mx-auto font-sans"
         >
-          {sections.map((section) => (
-            <SortableSection 
-              key={section.id} 
-              id={section.id}
-              accentColor={accentColor}
+          {/* Header */}
+          <header className={`border-b-2 border-${accentColor}-600 pb-6 mb-6`}>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
+              <div>
+                <h1 className="text-3xl font-bold text-slate-800">
+                  {personalInfo.firstName} {personalInfo.lastName}
+                </h1>
+                <h2 className={`text-xl text-${accentColor}-600 mt-1`}>{personalInfo.jobTitle}</h2>
+              </div>
+
+              {/* {personalInfo.photo && (
+                <div className="mt-4 md:mt-0">
+                  <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-indigo-600">
+                    <img
+                      src={personalInfo.photo || "/placeholder.svg"}
+                      alt={`${personalInfo.firstName} ${personalInfo.lastName}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              )} */}
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-4">
+              {personalInfo.email && (
+                <div className="flex items-center text-sm text-slate-600">
+                  {/* <Mail className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
+                  <span>{personalInfo.email}</span>
+                </div>
+              )}
+
+              {personalInfo.phone && (
+                <div className="flex items-center text-sm text-slate-600">
+                  {/* <Phone className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
+                  <span>{personalInfo.phone}</span>
+                </div>
+              )}
+
+              {personalInfo.location && (
+                <div className="flex items-center text-sm text-slate-600">
+                  {/* <MapPin className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
+                  <span>{personalInfo.location}</span>
+                </div>
+              )}
+
+              {personalInfo.website && (
+                <div className="flex items-center text-sm text-slate-600">
+                  {/* <Globe className={`h-4 w-4 mr-2 text-${accentColor}-600`} /> */}
+                  <span>{personalInfo.website}</span>
+                </div>
+              )}
+            </div>
+          </header>
+
+          {/* Draggable Sections */}
+          <DndContext 
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext 
+              items={sections.map(s => s.id)}
+              strategy={verticalListSortingStrategy}
             >
-              {renderSectionContent(section)}
-            </SortableSection>
-          ))}
-        </SortableContext>
-      </DndContext>
+              {sections.map((section) => (
+                <SortableSection 
+                  key={section.id} 
+                  id={section.id}
+                  accentColor={accentColor}
+                >
+                  {renderSectionContent(section)}
+                </SortableSection>
+              ))}
+            </SortableContext>
+          </DndContext>
+        </div>
+      </div>
     </div>
   )
 }
